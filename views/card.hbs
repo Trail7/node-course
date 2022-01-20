@@ -1,0 +1,36 @@
+<h1>Cart</h1>
+
+<div id="card">
+{{#if products.length}}
+<table>
+    <thead>
+    <tr>
+        <th></th>
+        <th>Name</th>
+        <th>Qty</th>
+        <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    {{#each products}}
+
+    <tr>
+        <td><img src="{{img}}" class="small-img" alt="img"></td>
+        <td>{{title}}</td>
+        <td>{{count}}</td>
+        <td>
+            <button class="btn btn-small js-remove" data-id="{{id}}">Remove</button>
+        </td>
+    </tr>
+    {{/each}}
+    </tbody>
+</table>
+<p><strong>Price: </strong> <span class="price">{{price}}</span></p>
+
+    <form action="/orders" method="POST">
+        <button type="submit" class="btn">Place Order</button>
+    </form>
+{{else}}
+
+{{/if}}
+</div>

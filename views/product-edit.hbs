@@ -1,0 +1,30 @@
+<h2>Edit <strong>{{product.title}}</strong> product</h2>
+
+<form action='/products/edit' method='POST' class="product-form">
+    <div class="input-field">
+        <input id="title" name="title" type="text" class="validate" required value="{{product.title}}">
+        <label for="title">Product Name</label>
+        <span class="helper-text" data-error="wrong">Enter product name</span>
+    </div>
+
+    <div class="input-field">
+        <input id="price" name="price" type="number" class="validate" required min="1" value="{{product.price}}">
+        <label for="price">Product Price</label>
+        <span class="helper-text" data-error="wrong">Enter valid price</span>
+    </div>
+
+    <div class="input-field">
+        <input id="img" name="img" type="text" class="validate" required value="{{product.img}}">
+        <label for="img">Product image</label>
+        <span class="helper-text" data-error="wrong">Enter image url</span>
+    </div>
+
+    <input type="hidden" name="id" value="{{product.id}}">
+
+    <button type="submit" class="btn btn-primary">Save product</button>
+</form>
+
+<form action="/products/remove" method="post">
+    <input type="hidden" name="id" value="{{product.id}}">
+    <button class="btn red">Remove Product</button>
+</form>
