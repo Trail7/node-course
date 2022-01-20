@@ -14,6 +14,7 @@ const authRoutes = require('./routes/auth')
 const mongoose = require('mongoose')
 const User = require('./models/user')
 const varMiddleware = require ('./middleware/variables')
+const userMiddleware = require ('./middleware/user')
 const MONGODB_URI = 'mongodb+srv://admin:pass@cluster0.hkxy9.mongodb.net/shop'
 
 const app = express()
@@ -38,6 +39,8 @@ app.use(session({
     store
 }))
 app.use(varMiddleware)
+app.use(userMiddleware)
+
 app.use('/', homeRoutes)
 app.use('/add', addRoutes)
 app.use('/products', productRoutes)
@@ -51,7 +54,6 @@ const PORT = process.env.PORT || 3000
 async function start() {
     try {
         await mongoose.connect(MONGODB_URI, {useNewUrlParser: true, useUnifiedTopology: true})
-
 
         app.listen(PORT, () => {
             console.log(`Server is running on port ${PORT}`)
