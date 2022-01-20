@@ -21,9 +21,34 @@ router.post('/login', async (req, res) => {
     req.session.user = user
     req.session.isAuthenticated = true
     req.session.save(err => {
-        if (err){ throw err}
+        if (err) {
+            throw err
+        }
         res.redirect('/')
     })
+})
+
+
+router.post('/register', async (req, res) => {
+    try {
+        const {email, password, repeat, name} = req.body
+        const candidate = await User.findOne({email})
+        if (candidate) {
+            res.redirect('/')
+
+            // res.redirect('/auth/login#register')
+        } else {
+            const user = new User ({
+                email, name, password, cart: {items: []}
+            })
+            await user.save(err => {
+                if (err) {throw err}
+                res.redirect('/auth/login#login')
+            })
+        }
+    } catch (e) {
+        console.log(e)
+    }
 })
 
 
