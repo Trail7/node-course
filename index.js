@@ -1,5 +1,6 @@
 const express = require('express')
 const path = require('path')
+const csrf = require('csurf')
 const Handlebars = require('handlebars')
 const {engine} = require('express-handlebars')
 const {allowInsecurePrototypeAccess} = require('@handlebars/allow-prototype-access')
@@ -38,6 +39,7 @@ app.use(session({
     saveUninitialized: false,
     store
 }))
+app.use(csrf())
 app.use(varMiddleware)
 app.use(userMiddleware)
 

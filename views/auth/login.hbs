@@ -21,6 +21,7 @@
                     <span class="helper-text" data-error="wrong">Enter password</span>
                 </div>
 
+                <input type="hidden" name="_csrf" value="{{csrf}}">
                 <button class="btn btn-primary" type="submit">Sign in</button>
             </form>
         </div>
@@ -50,6 +51,7 @@
                     <label for="name">Name</label>
                     <span class="helper-text" data-error="wrong">Enter your name</span>
                 </div>
+                <input type="hidden" name="_csrf" value="{{csrf}}">
 
                 <button class="btn btn-primary" type="submit">Sign up</button>
             </form>
