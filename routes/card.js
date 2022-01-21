@@ -31,7 +31,7 @@ router.get('/', auth,  async (req, res) => {
 
     const user = await req.user.populate(['cart.items.productId'])
 
-    console.log(user.cart.items[0])
+    // console.log(user.cart.items[0])
     const products = mapCartItems(user.cart)
     res.render('card', {
         title: 'Cart',
