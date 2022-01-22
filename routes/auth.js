@@ -6,7 +6,9 @@ const bcrypt = require('bcryptjs')
 router.get('/login', async (req, res) => {
     res.render('auth/login', {
         title: "Login",
-        isLogin: true
+        isLogin: true,
+        error: req.flash('error'),
+        loginError: req.flash('loginError')
     })
 })
 
@@ -33,9 +35,11 @@ router.post('/login', async (req, res) => {
                     res.redirect('/')
                 })
             }else {
+                req.flash('loginError', 'Invalid login or password')
                 res.redirect('/auth/login#login')
             }
         }else {
+            req.flash('loginError', 'Invalid login or password')
             res.redirect('/auth/login#login')
         }
 
@@ -50,9 +54,8 @@ router.post('/register', async (req, res) => {
         const {email, password, repeat, name} = req.body
         const candidate = await User.findOne({email})
         if (candidate) {
-            res.redirect('/')
-
-            // res.redirect('/auth/login#register')
+            req.flash('error', 'User already exists')
+            res.redirect('/auth/login#register')
         } else {
             const hashPassword = await bcrypt.hash(password, 10)
             const user = new User({
