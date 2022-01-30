@@ -26,7 +26,8 @@ const store = new MongoStore({
 app.engine('hbs', engine({
     defaultLayout: 'main',
     extname: 'hbs',
-    handlebars: allowInsecurePrototypeAccess(Handlebars)
+    handlebars: allowInsecurePrototypeAccess(Handlebars),
+    helpers: require('./utils/hbs-helpers')
 }));
 app.set('view engine', 'hbs');
 app.set('views', 'views')

@@ -5,37 +5,57 @@ const auth = require('../middleware/auth')
 
 
 router.get('/', async (req, res) => {
-    const products = await Product.find()
-        //lesson 43
-        .populate('userId', 'email name')
-        .select('price title img')
+    try {
+        const products = await Product.find()
+            //lesson 43
+            .populate('userId', 'email name')
+            .select('price title img')
 
-    console.log(products)
-    res.render('products', {
-        title: "Products",
-        isProducts: true,
-        products
-    })
+        console.log(products)
+        res.render('products', {
+            title: "Products",
+            isProducts: true,
+            userId: req.user ? req.user._id.toString() : null,
+            products
+        })
+    } catch (e) {
+        console.log(e)
+    }
 })
 
 router.get('/:id/edit', auth, async (req, res) => {
     if (!req.query.allow) {
         return res.redirect('/')
     }
+    try {
+        const product = await Product.findById(req.params.id)
 
-    const product = await Product.findById(req.params.id)
-    res.render('product-edit', {
-        title: `Edit ${product.title}`,
-        product
-    })
+        if (product.userId.toString() !== req.user._id.toString()) {
+            return res.redirect('/products')
+        }
+        res.render('product-edit', {
+            title: `Edit ${product.title}`,
+            product
+        })
+    } catch (e) {
+        console.log(e)
+    }
 })
 
-
 router.post('/edit', auth, async (req, res) => {
-    const {id} = req.body
-    delete req.body.id
-    await Product.findByIdAndUpdate(id, req.body)
-    res.redirect('/products')
+    try {
+        const product = await Product.findById(req.params.id)
+        if (product.userId.toString() !== req.user._id.toString()) {
+            return res.redirect('/products')
+        }
+        const {id} = req.body
+        delete req.body.id
+        await Product.findByIdAndUpdate(id, req.body)
+        res.redirect('/products')
+    } catch (e) {
+        console.log(e)
+    }
+
 })
 
 router.get('/:id', async (req, res) => {
