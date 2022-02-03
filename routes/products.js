@@ -2,6 +2,8 @@ const {Router} = require('express')
 const Product = require('../models/product')
 const router = Router()
 const auth = require('../middleware/auth')
+const {productValidators} = require('../utils/validators')
+const {validationResult} = require('express-validator')
 
 
 router.get('/', async (req, res) => {
@@ -11,7 +13,7 @@ router.get('/', async (req, res) => {
             .populate('userId', 'email name')
             .select('price title img')
 
-        console.log(products)
+        // console.log(products)
         res.render('products', {
             title: "Products",
             isProducts: true,
@@ -42,13 +44,22 @@ router.get('/:id/edit', auth, async (req, res) => {
     }
 })
 
-router.post('/edit', auth, async (req, res) => {
+router.post('/edit', auth, productValidators, async (req, res) => {
+    const errors = validationResult(req)
+    // console.log(req)
+
+    const {id} = req.body
+
+    if (!errors.isEmpty()){
+        return res.status(422).redirect(`/products/${id}/edit?allow=true`)
+    }
     try {
-        const product = await Product.findById(req.params.id)
+        const product = await Product.findById(req.body.id)
+
         if (product.userId.toString() !== req.user._id.toString()) {
             return res.redirect('/products')
         }
-        const {id} = req.body
+        // const {id} = req.body
         delete req.body.id
         await Product.findByIdAndUpdate(id, req.body)
         res.redirect('/products')

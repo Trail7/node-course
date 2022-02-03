@@ -2,6 +2,8 @@ const {Router} = require('express')
 const Product = require('../models/product')
 const router = Router()
 const auth = require('../middleware/auth')
+const {validationResult} = require('express-validator')
+const {productValidators} = require('../utils/validators')
 
 router.get('/', auth, (req, res) => {
     res.render('add', {
@@ -10,21 +12,33 @@ router.get('/', auth, (req, res) => {
     })
 })
 
-router.post('/', auth, async (req,res) => {
-    console.log(req.body)
-    // const product = new Product(req.body.title, req.body.price, req.body.img)
+router.post('/', auth, productValidators, async (req, res) => {
 
-    const product = new Product ({
+    const errors = validationResult(req)
+    if (!errors.isEmpty()){
+        return res.status(422).render('add', {
+            title: "Add Product",
+            isAdd: true,
+            error: errors.array()[0].msg,
+            data: {
+                title: req.body.title,
+                price: req.body.price,
+                img: req.body.img,
+            }
+        })
+    }
+
+    const product = new Product({
         title: req.body.title,
         price: req.body.price,
         img: req.body.img,
         userId: req.user
     })
 
-    try{
+    try {
         await product.save()
         res.redirect('/products')
-    } catch (e){
+    } catch (e) {
         console.log(e)
     }
 

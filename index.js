@@ -16,6 +16,7 @@ const authRoutes = require('./routes/auth')
 const mongoose = require('mongoose')
 const varMiddleware = require ('./middleware/variables')
 const userMiddleware = require ('./middleware/user')
+const errorHandler = require ('./middleware/error')
 const keys = require ('./keys')
 
 const app = express()
@@ -51,6 +52,7 @@ app.use('/products', productRoutes)
 app.use('/card', cardRoutes)
 app.use('/orders', ordersRoutes)
 app.use('/auth', authRoutes)
+app.use(errorHandler)
 
 
 const PORT = process.env.PORT || 3000
