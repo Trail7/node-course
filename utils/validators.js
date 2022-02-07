@@ -27,7 +27,7 @@ exports.registerValidators = [
             return true
         })
         .trim(),
-    body('name', 'Name min length is 3')
+    body('name', 'Name min length is 5')
         .isLength({min: 5})
         .trim()
 ]
