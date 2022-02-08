@@ -15,8 +15,8 @@ exports.registerValidators = [
             }
         })
         .normalizeEmail(),
-    body('password', 'min password length is 6')
-        .isLength({min: 6, max: 20})
+    body('password', 'min password length is 3')
+        .isLength({min: 3, max: 20})
         .isAlphanumeric()
         .trim(),
     body('confirm')
@@ -27,8 +27,8 @@ exports.registerValidators = [
             return true
         })
         .trim(),
-    body('name', 'Name min length is 5')
-        .isLength({min: 5})
+    body('name', 'Name min length is 1')
+        .isLength({min: 1})
         .trim()
 ]
 
