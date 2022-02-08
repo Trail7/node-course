@@ -3,5 +3,4 @@ node_modules
 package-lock.json
 first-try.iml
 data
-keys
-images
+keys/keys.dev.js
